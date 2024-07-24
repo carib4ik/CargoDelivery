@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Draw : MonoBehaviour
 {
+    public event Action<List<Vector3>> MoveRope;
+
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private float _minDistance = 0.5f;
-
+    
     private List<Vector3> _points;
     private Camera _camera;
     private float _deep;
@@ -27,7 +30,7 @@ public class Draw : MonoBehaviour
         
         if (Input.GetMouseButtonUp(0))
         {
-            CreateMesh();
+            MoveRope!.Invoke(_points);
         }
     }
 
@@ -37,18 +40,7 @@ public class Draw : MonoBehaviour
         _lineRenderer.GetPositions(positions);
         return positions[0];
     }
-
-    private void CreateMesh()
-    {
-        var mesh = new Mesh();
-        _lineRenderer.BakeMesh(mesh);
-            
-        var meshObject = new GameObject("line");
-        var meshFilter = meshObject.AddComponent<MeshFilter>();
-        meshObject.AddComponent<MeshRenderer>();
-        meshFilter.mesh = mesh;
-    }
-
+    
     private void Drawing()
     {
         var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _deep);
