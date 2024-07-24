@@ -1,13 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Obi;
 using UnityEngine;
 
 public class BoxController : MonoBehaviour
 {
+    public event Action<string> FinishGame;
+    
     [SerializeField] private GameObject _rope;
     [SerializeField] private float _speed = 1;
 
     private ObiParticleAttachment _ropeAttachment;
+    private bool _isGameOver;
 
     private void Awake()
     {
@@ -22,11 +26,18 @@ public class BoxController : MonoBehaviour
             }
         }
     }
-
+    
     private void OnCollisionEnter()
     {
         // Отцепляем ящик от веревки
         _ropeAttachment.enabled = false;
+
+        if (!_isGameOver)
+        {
+            FinishGame!.Invoke(UIScreensNamesConst.GameOverCanvas);
+            _isGameOver = true;
+        }
+        
     }
 
     // TODO: Вызовите данный метод, когда ящик на веревке окажется над финишной точкой 
