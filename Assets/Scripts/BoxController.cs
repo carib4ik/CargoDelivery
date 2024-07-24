@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class BoxController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _rope;
-    [SerializeField] 
-    private float _speed = 1;
+    [SerializeField] private GameObject _rope;
+    [SerializeField] private float _speed = 1;
 
     private ObiParticleAttachment _ropeAttachment;
 
