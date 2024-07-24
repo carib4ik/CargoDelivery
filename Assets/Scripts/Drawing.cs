@@ -20,14 +20,15 @@ public class Draw : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetMouseButton(0)) return;
-        var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _deep);
-        var drawingPoint = _camera.ScreenToWorldPoint(mousePosition);
-
-        if (_points.Count != 0 && !(Vector3.Distance(_points[^1], drawingPoint) >= _minDistance)) return;
-        _points.Add(drawingPoint);
-        _lineRenderer.positionCount = _points.Count;
-        _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, drawingPoint);
+        if (Input.GetMouseButton(0))
+        {
+            Drawing();
+        }
+        
+        if (Input.GetMouseButtonUp(0))
+        {
+            CreateMesh();
+        }
     }
 
     private Vector3 GetFirstLineRendererPoint()
@@ -35,5 +36,29 @@ public class Draw : MonoBehaviour
         var positions = new Vector3[_lineRenderer.positionCount];
         _lineRenderer.GetPositions(positions);
         return positions[0];
+    }
+
+    private void CreateMesh()
+    {
+        var mesh = new Mesh();
+        _lineRenderer.BakeMesh(mesh);
+            
+        var meshObject = new GameObject("line");
+        var meshFilter = meshObject.AddComponent<MeshFilter>();
+        meshObject.AddComponent<MeshRenderer>();
+        meshFilter.mesh = mesh;
+    }
+
+    private void Drawing()
+    {
+        var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _deep);
+        var drawingPoint = _camera.ScreenToWorldPoint(mousePosition);
+
+        if (_points.Count == 0 || Vector3.Distance(_points[^1], drawingPoint) >= _minDistance)
+        {
+            _points.Add(drawingPoint);
+            _lineRenderer.positionCount = _points.Count;
+            _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, drawingPoint);
+        }
     }
 }
