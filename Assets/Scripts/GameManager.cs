@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _drawer.MoveRope += _movementController.Move;
-        _movementController.Finishing += _boxController.DropDown;
+        _movementController.ShowEndUI += _boxController.DropDown;
         _boxController.FinishGame += _canvasFadeIn.FadeInCanvas;
     }
 }

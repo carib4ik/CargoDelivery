@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    public event Action<Vector3> Finishing;
+    public event Action<Vector3> ShowEndUI;
     
     [SerializeField] private float _movementSpeed;
     [SerializeField] private Collider _finishPoint;
@@ -17,7 +17,7 @@ public class MovementController : MonoBehaviour
         if (other == _finishPoint) 
         {
             StopCoroutine(_coroutine);
-            Finishing!.Invoke(_finishPoint.transform.position);
+            ShowEndUI!.Invoke(_finishPoint.transform.position);
         }
     }
     

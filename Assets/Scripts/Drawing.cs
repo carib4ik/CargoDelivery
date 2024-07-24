@@ -12,6 +12,7 @@ public class Draw : MonoBehaviour
     private List<Vector3> _points;
     private Camera _camera;
     private float _deep;
+    private bool _isGameOver;
 
     private void Awake()
     {
@@ -25,12 +26,20 @@ public class Draw : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            Drawing();
+            if (!_isGameOver)
+            {
+                Drawing();
+            }
+            
         }
         
         if (Input.GetMouseButtonUp(0))
         {
-            MoveRope!.Invoke(_points);
+            if (!_isGameOver)
+            {
+                MoveRope!.Invoke(_points);
+                _isGameOver = true;
+            }
         }
     }
 

@@ -74,5 +74,7 @@ public class BoxController : MonoBehaviour
         
         // Когда ящик занял нужную позицию - отцепляем ящик от веревки
         _ropeAttachment.enabled = false;
+        
+        FinishGame!.Invoke(UIScreensNamesConst.SuccessCanvas);
     }
 }
